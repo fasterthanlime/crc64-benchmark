@@ -341,7 +341,7 @@ async function main() {
         1024 /
         1024 /
         ((end - start) / 1000)
-      ).toFixed(2)}`,
+      ).toFixed(8)}`,
     );
   }
 }

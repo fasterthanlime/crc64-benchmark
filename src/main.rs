@@ -37,7 +37,7 @@ fn main() {
     // print the digest as hex and the elapsed time
     println!("{:x} (crc)", digest.finalize());
     println!("time elapsed: {:?}", start.elapsed());
-    println!("GB/s = {:.2}", 1.0 / start.elapsed().as_secs_f64());
+    println!("GB/s = {:.8}", 1.0 / start.elapsed().as_secs_f64());
 
     let mut digest = crc64fast::Digest::new();
 
@@ -61,5 +61,5 @@ fn main() {
     // print the digest as hex and the elapsed time
     println!("{:X} (crc64fast)", digest.sum64());
     println!("time elapsed: {:?}", start.elapsed());
-    println!("GB/s = {:.2}", 1.0 / start.elapsed().as_secs_f64());
+    println!("GB/s = {:.8}", 1.0 / start.elapsed().as_secs_f64());
 }
