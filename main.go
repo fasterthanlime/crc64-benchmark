@@ -34,4 +34,5 @@ func main() {
 
 	log.Printf("hex digest: %X", sum)
 	log.Printf("time elapsed: %.2fms", elapsed.Seconds()*1000)
+	log.Printf("GB/s: %.2f", float64(1)/elapsed.Seconds())
 }

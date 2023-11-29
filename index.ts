@@ -322,17 +322,28 @@ class CRC64 {
 
 import { createReadStream } from "fs";
 async function main() {
-  let start = performance.now();
+  {
+    let start = performance.now();
 
-  let s = createReadStream("bigfile");
-  let crc = new CRC64();
-  s.on("data", (d) => crc.update(d));
-  await new Promise((resolve) => s.on("close", resolve));
-  let hash = crc.digest("hex");
+    let s = createReadStream("bigfile");
+    let crc = new CRC64();
+    s.on("data", (d) => crc.update(d));
+    await new Promise((resolve) => s.on("close", resolve));
+    let hash = crc.digest("hex");
 
-  let end = performance.now();
-  console.log(`hex digest: ${hash}`);
-  console.log(`computed in ${(end - start).toFixed(2)}ms`);
+    let end = performance.now();
+    console.log(`hex digest (crc64): ${hash}`);
+    console.log(`computed in ${(end - start).toFixed(2)}ms`);
+    console.log(
+      `GB/s: ${(
+        s.bytesRead /
+        1024 /
+        1024 /
+        1024 /
+        ((end - start) / 1000)
+      ).toFixed(2)}`,
+    );
+  }
 }
 
 main().catch(console.error);
