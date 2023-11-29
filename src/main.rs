@@ -11,6 +11,8 @@ const CRC64_AZURE: crc::Algorithm<u64> = crc::Algorithm {
     residue: 0x0,
 };
 
+const BUF_SIZE: usize = 256 * 1024;
+
 fn main() {
     let crc = crc::Crc::<u64>::new(&CRC64_AZURE);
     let mut digest = crc.digest();
@@ -19,8 +21,7 @@ fn main() {
     let start = std::time::Instant::now();
     let f = File::open("bigfile").unwrap();
 
-    // read 1MB at a time, and update the digest
-    let mut reader = std::io::BufReader::with_capacity(1024 * 1024, f);
+    let mut reader = std::io::BufReader::with_capacity(BUF_SIZE, f);
     loop {
         let length = {
             let buffer = reader.fill_buf().unwrap();
@@ -34,6 +35,29 @@ fn main() {
     }
 
     // print the digest as hex and the elapsed time
-    println!("{:x}", digest.finalize());
+    println!("{:x} (crc)", digest.finalize());
+    println!("time elapsed: {:?}", start.elapsed());
+
+    let mut digest = crc64fast::Digest::new();
+
+    // measure elapsed time
+    let start = std::time::Instant::now();
+    let f = File::open("bigfile").unwrap();
+
+    let mut reader = std::io::BufReader::with_capacity(BUF_SIZE, f);
+    loop {
+        let length = {
+            let buffer = reader.fill_buf().unwrap();
+            digest.write(buffer);
+            buffer.len()
+        };
+        if length == 0 {
+            break;
+        }
+        reader.consume(length);
+    }
+
+    // print the digest as hex and the elapsed time
+    println!("{:X} (crc64fast)", digest.sum64());
     println!("time elapsed: {:?}", start.elapsed());
 }

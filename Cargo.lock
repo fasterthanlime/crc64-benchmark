@@ -22,4 +22,11 @@ name = "crc64-benchmark"
 version = "0.1.0"
 dependencies = [
  "crc",
+ "crc64fast",
 ]
+
+[[package]]
+name = "crc64fast"
+version = "1.0.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "bd3d10c557924c719a61e583165e31a0d8131b20415d6858983e67d1eb8a82bd"

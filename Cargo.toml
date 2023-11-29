@@ -5,3 +5,4 @@ edition = "2021"
 
 [dependencies]
 crc = "3.0.1"
+crc64fast = "1.0.0"
